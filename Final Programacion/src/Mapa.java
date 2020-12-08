@@ -7,8 +7,7 @@ public class Mapa {
 	private int[][] casillas;
 	private PImage img;
 	private int xSalida, ySalida, xSalida2, ySalida2;
-	private int col, fil, col2, fil2, col3, fil3;
-	private int xObs, yObs;
+	private int col, fil, col2, fil2;
 	private int pantalla;
 
 	public Mapa(PImage img, int pantalla) {
@@ -44,14 +43,14 @@ public class Mapa {
 		this.ySalida = 25 + (fil * 50);
 		
 		//Salida pantalla 1
-		this.col3 = 11;
-		this.fil3 = 12;
-		this.xSalida2 = 25 + (col3 * 50);
-		this.ySalida2 = 25 + (fil3 * 50);
+		this.col2 = 11;
+		this.fil2 = 12;
+		this.xSalida2 = 25 + (col2 * 50);
+		this.ySalida2 = 25 + (fil2 * 50);
 
 	}
 
-	public void pintar(PApplet app, PImage imgO) {
+	public void pintar(PApplet app) {
 		// Coordenadas de inicio de la matriz
 		int x = 25;
 		int y = 25;
