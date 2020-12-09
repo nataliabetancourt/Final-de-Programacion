@@ -6,8 +6,8 @@ public class Mapa {
 
 	private int[][] casillas;
 	private PImage img;
-	private int xSalida, ySalida, xSalida2, ySalida2;
-	private int col, fil, col2, fil2;
+	private int xSalida, ySalida, xSalida2, ySalida2, xRetorno, yRetorno;
+	private int col, fil, col2, fil2, col3, fil3;
 	private int pantalla;
 
 	public Mapa(PImage img, int pantalla) {
@@ -47,6 +47,12 @@ public class Mapa {
 		this.fil2 = 12;
 		this.xSalida2 = 25 + (col2 * 50);
 		this.ySalida2 = 25 + (fil2 * 50);
+		
+		//Retorno pantallas
+		this.col3 = 2;
+		this.fil3 = 2;
+		this.xRetorno = 25 + (col3 * 50);
+		this.yRetorno = 25 + (fil3 * 50);
 
 	}
 
@@ -61,7 +67,7 @@ public class Mapa {
 
 				switch (casillas[i][j]) {
 				case 0:
-					app.noStroke();
+					app.stroke(255);
 					app.noFill();
 					break;
 				// Bordes
@@ -90,7 +96,13 @@ public class Mapa {
 		} else {
 			app.circle(xSalida, ySalida, 50);
 		}
-
+		
+		//Circulo retorno
+		if (pantalla > 2) {
+			app.noStroke();
+			app.fill(232, 17, 46);
+			app.circle(xRetorno, yRetorno, 40);
+		}
 	}
 
 	// Devuelve el valor de la casillas --> 0 o 1
@@ -122,5 +134,13 @@ public class Mapa {
 
 	public void setFil(int fil) {
 		this.fil = fil;
+	}
+	
+	public int getxRetorno() {
+		return xRetorno;
+	}
+	
+	public int getyRetorno() {
+		return yRetorno;
 	}
 }
