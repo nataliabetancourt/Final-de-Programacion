@@ -89,7 +89,7 @@ public class Obstaculos {
 			fil = 3;			col = 12;
 			casillas[fil][col] = 1;
 			
-			fil = 2;			col = 2;
+			fil = 2;			col = 3;
 			casillas[fil][col] = 1;
 			
 			fil = 11;			col = 22;
