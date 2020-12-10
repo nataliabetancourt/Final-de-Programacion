@@ -16,7 +16,7 @@ public class Principal extends PApplet {
 	}
 
 	// Fotos de fondo												
-	PImage portada, cueva, dia1, dia2, tarde, noche;		
+	PImage portada, cueva, dia1, dia2, tarde, noche, castilloExterior, castilloInterior;		
 	// Fotos de obstaculos
 	PImage arbolD, arbolT, arbolN, ladrillo;
 	//Foto de inventario										
@@ -24,7 +24,7 @@ public class Principal extends PApplet {
 	//Fotos botones
 	PImage start, salida1, salida2, retorno1, retorno2;
 	// Matriz																
-	Mapa mapa2, mapa3, mapa4, mapa5, mapa6, mapa7, mapa8, mapa9;		
+	Mapa mapa2, mapa3, mapa4, mapa5, mapa6, mapa7, mapa8, mapa9, mapa10;		
 	//Obstaculos	
 	Obstaculos obs2, obs3, obs4, obs5, obs6, obs7, obs8, obs9;
 	// Personaje	
@@ -65,6 +65,8 @@ public class Principal extends PApplet {
 		salida1 = loadImage("Salidas-06.png");				salida2 = loadImage("Salidas-07.png");
 		//Retorno1															//Retorno2
 		retorno1 = loadImage("Salidas-08.png");				retorno2 = loadImage("Salidas-09.png");		
+		//Castillo por fuera												//Castillo por dentro
+		castilloExterior = loadImage("castillos-01.jpg");	castilloInterior = loadImage("castillos-02.jpg");
 	
 		//Llamada de clases
 		mapa2 = new Mapa(cueva, 2, salida2, retorno1);				obs2 = new Obstaculos(2);
@@ -74,7 +76,8 @@ public class Principal extends PApplet {
 		mapa6 = new Mapa(noche, 6, salida1, retorno1);				obs6 = new Obstaculos(6);
 		mapa7 = new Mapa(dia2, 7, salida1, retorno1);				obs7 = new Obstaculos(7);
 		mapa8 = new Mapa(tarde, 8, salida1, retorno1);				obs8 = new Obstaculos(8);
-		mapa9 = new Mapa(noche, 9, salida1, retorno1);				obs9 = new Obstaculos(9);
+		mapa9 = new Mapa(castilloExterior, 9, salida1, retorno1);	obs9 = new Obstaculos(9);
+		mapa10 = new Mapa(castilloInterior, 10, salida1, retorno1);
 		p = new Personaje(11, 1, mapa2, obs2);
 		maleta = new Maletin();
 		listaG = new ArrayList<Inventario>();					listaN = new ArrayList<Inventario>();
@@ -346,9 +349,24 @@ public class Principal extends PApplet {
 			p.setObs(obs9);
 			mapa9.pintar(this);
 			obs9.pintar(this, arbolN, 80, 80);
+			
+			//Validar salida especial por ubicacion del circulo
+			if (dist(p.getX(), p.getY(), mapa3.getxSalida3(), mapa3.getySalida3())<25) {
+				tiempoSalida++;
+				if (tiempoSalida == 100) {
+					p.setCol(1);
+					p.setFil(6);
+					pantallas = 10;
+					tiempoSalida = 0;
+				}
+			}
+		
 			validarRetorno(8, 1, 6);
 			break;
-			
+		case 10:
+			p.setRefMapa(mapa10);
+			mapa10.pintar(this);
+			break;
 		}
 		
 		if (pantallas > 1) {

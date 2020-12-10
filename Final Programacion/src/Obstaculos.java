@@ -160,37 +160,6 @@ public class Obstaculos {
 			casillas[fil][col] = 1;
 			
 			break;
-		case 9:
-			fil = 7;			col = 4;
-			casillas[fil][col] = 1;
-			
-			fil = 12;			col = 9;
-			casillas[fil][col] = 1;
-			
-			fil = 3;			col = 20;
-			casillas[fil][col] = 1;
-			
-			fil = 5;			col = 10;
-			casillas[fil][col] = 1;
-			
-			fil = 9;			col = 14;
-			casillas[fil][col] = 1;
-			
-			fil = 12;			col = 15;
-			casillas[fil][col] = 1;
-			
-			fil = 2;			col = 19;
-			casillas[fil][col] = 1;
-			
-			fil = 1;			col = 4;
-			casillas[fil][col] = 1;
-			
-			fil = 6;			col = 4;
-			casillas[fil][col] = 1;
-			
-			fil = 10;			col = 10;
-			casillas[fil][col] = 1;
-			break;
 		}
 
 	}
