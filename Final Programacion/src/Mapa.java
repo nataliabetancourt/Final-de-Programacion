@@ -5,17 +5,19 @@ import processing.core.PImage;
 public class Mapa {
 
 	private int[][] casillas;
-	private PImage img;
+	private PImage img, salida, retorno;
 	private int xSalida, ySalida, xSalida2, ySalida2, xRetorno, yRetorno;
 	private int col, fil, col2, fil2, col3, fil3;
 	private int pantalla;
 
-	public Mapa(PImage img, int pantalla) {
+	public Mapa(PImage img, int pantalla, PImage salida, PImage retorno) {
 		casillas = new int[14][24];
 		this.pantalla = pantalla;
 
-		// Fondo
+		// Imagenes
 		this.img = img;
+		this.salida = salida;
+		this.retorno = retorno;
 
 		// Filas y columnas del mapa
 		for (int i = 0; i < 14; i++) {
@@ -89,19 +91,20 @@ public class Mapa {
 		app.image(img, 0, 0);
 
 		// Circulo salida
-		app.noStroke();
-		app.fill(0, 255, 0);
+		app.imageMode(PConstants.CENTER);
 		if (pantalla == 2) {
-			app.circle(xSalida2, ySalida2, 50);
+			app.image(salida, xSalida2, ySalida2, 50, 50);
 		} else {
-			app.circle(xSalida, ySalida, 50);
+			app.image(salida, xSalida, ySalida, 50, 50);
 		}
 		
 		//Circulo retorno
 		if (pantalla > 2) {
-			app.noStroke();
-			app.fill(232, 17, 46);
-			app.circle(xRetorno, yRetorno, 40);
+			if (pantalla == 3) {
+				app.image(retorno, xRetorno, yRetorno, 40, 40);
+			} else {
+				app.image(retorno, xRetorno, yRetorno, 40, 40);
+			}
 		}
 	}
 

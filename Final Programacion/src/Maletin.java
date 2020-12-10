@@ -6,18 +6,21 @@ import processing.core.PImage;
 
 public class Maletin {
 
-	private int x, y, x2, y2, xImagen, yImagen;
+	private int x, y, x2, y2;
 	private int[][] casillas;
-	private ArrayList<Inventario> elementosInventario;
+	private ArrayList<Inventario> naranjasInventario, gemasInventario;
 
 	Inventario refInventario;
+	Mapa refMapa;
+	Obstaculos refObs;
 
 	public Maletin() {
 		this.x = 80;
 		this.y = 620;
-		this.x2 = 550;
-		this.y2 = 550;
-		this.elementosInventario = new ArrayList<Inventario>();
+		this.x2 = 375;
+		this.y2 = 575;
+		this.naranjasInventario = new ArrayList<Inventario>();
+		this.gemasInventario = new ArrayList<Inventario>();
 
 		casillas = new int[3][8];
 
@@ -39,30 +42,25 @@ public class Maletin {
 		app.image(img, x, y - 10, 100, 100);
 	}
 
-	public void pintarAbierto(PApplet app) {
-		// Coordenadas de inicio de la matriz
+	public void pintarAbierto(PApplet app, PImage gema, PImage naranja) {
 		int x = 175;
 		int y = 575;
-
-		// Matriz del maletin
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 8; j++) {
-
-				this.xImagen = 25 + (i * 50);
-				this.yImagen = 25 + (j * 50);
-
-				for (int j2 = 0; j2 < elementosInventario.size(); j2++) {
-					elementosInventario.get(j2).pintar2(app, xImagen, yImagen);
-				}
-
-				app.rectMode(PConstants.CENTER);
-				app.rect(x, y, 50, 50);
-				app.rectMode(PConstants.CORNER);
-				x += 50;
-			}
-			x = 175;
-			y += 50;
-		}
+		
+		//Cuadros maletin
+		app.rectMode(PConstants.CORNER);
+		app.rect(x, y, 200, 50);
+		app.rect(x, y + 50, 200, 50);
+		app.fill(0, 80);
+		app.stroke(255, 204, 44);
+		app.strokeWeight(3);
+		
+		//Numero de gemas y naranjas
+		app.fill(255, 204, 44);
+		app.image(gema, 250, 600, 50, 50);
+		app.textSize(24);
+		app.text(": " + gemasInventario.size(), 275, 608);
+		app.image(naranja, 250, 650, 50, 50);
+		app.text(": " + naranjasInventario.size(), 275, 658);
 
 		// Salida maletin
 		app.fill(232, 17, 46);
@@ -71,8 +69,12 @@ public class Maletin {
 
 	}
 
-	public void agregarElemento(Inventario ref) {
-		elementosInventario.add(ref);
+	public void agregarNaranja(Inventario ref) {
+		naranjasInventario.add(ref);
+	}
+	
+	public void agregarGema(Inventario ref) {
+		gemasInventario.add(ref);
 	}
 
 	public int getX() {
