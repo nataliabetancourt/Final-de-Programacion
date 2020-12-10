@@ -6,7 +6,7 @@ public class Mapa {
 
 	private int[][] casillas;
 	private PImage img, salida, retorno;
-	private int xSalida, ySalida, xSalida2, ySalida2, xRetorno, yRetorno;
+	private int xSalida, ySalida, xSalida2, ySalida2, xRetorno, yRetorno, xSalida3, ySalida3;
 	private int col, fil, col2, fil2, col3, fil3;
 	private int pantalla;
 
@@ -49,6 +49,12 @@ public class Mapa {
 		this.fil2 = 12;
 		this.xSalida2 = 25 + (col2 * 50);
 		this.ySalida2 = 25 + (fil2 * 50);
+		
+		//Salida pantalla 9
+		this.col3 = 20;
+		this.fil3 = 6;
+		this.xSalida3 = 25 + (col3 * 50);
+		this.ySalida3 = 25 + (fil3 * 50);
 		
 		//Retorno pantallas
 		this.col3 = 2;
@@ -94,7 +100,9 @@ public class Mapa {
 		app.imageMode(PConstants.CENTER);
 		if (pantalla == 2) {
 			app.image(salida, xSalida2, ySalida2, 50, 50);
-		} else {
+		} else if (pantalla == 9) {
+			app.image(salida, xSalida3, ySalida3, 50, 50);
+		} else if (pantalla < 10) {
 			app.image(salida, xSalida, ySalida, 50, 50);
 		}
 		
@@ -102,7 +110,7 @@ public class Mapa {
 		if (pantalla > 2) {
 			if (pantalla == 3) {
 				app.image(retorno, xRetorno, yRetorno, 40, 40);
-			} else {
+			} else if (pantalla<10) {
 				app.image(retorno, xRetorno, yRetorno, 40, 40);
 			}
 		}
@@ -145,5 +153,13 @@ public class Mapa {
 	
 	public int getyRetorno() {
 		return yRetorno;
+	}
+	
+	public int getxSalida3() {
+		return xSalida3;
+	}
+	
+	public int getySalida3() {
+		return ySalida3;
 	}
 }
