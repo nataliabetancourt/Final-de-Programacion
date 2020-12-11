@@ -21,6 +21,8 @@ public class Principal extends PApplet {
 	PImage arbolD, arbolT, arbolN, ladrillo;
 	//Foto de inventario										
 	PImage m, nota;
+	//Foto decoracion
+	PImage cama, tapete, closet;
 	//Fotos botones
 	PImage start, salida1, salida2, retorno1, retorno2;
 	// Matriz																
@@ -67,6 +69,9 @@ public class Principal extends PApplet {
 		retorno1 = loadImage("Salidas-08.png");				retorno2 = loadImage("Salidas-09.png");		
 		//Castillo por fuera												//Castillo por dentro
 		castilloExterior = loadImage("castillos-01.jpg");	castilloInterior = loadImage("castillos-02.jpg");
+		//Decoracion interior cueva
+		cama = loadImage("Cueva-02.png");					tapete = loadImage("Cueva-03.png");
+		closet = loadImage("Cueva-04.png");
 	
 		//Llamada de clases
 		mapa2 = new Mapa(cueva, 2, salida2, retorno1);				obs2 = new Obstaculos(2);
@@ -122,6 +127,10 @@ public class Principal extends PApplet {
 		case 2:
 			mapa2.pintar(this);
 			validarSalida(3, 11, 1);
+			imageMode(CORNER);
+			image(cama, 50, 50, 315, 315);
+			image(tapete, 325, 150, 95, 125);
+			image(closet, 1100, 50, 100, 200);
 			
 			//Gemas regados por mapa
 			for (int i = 0; i < listaG.size(); i++) {
