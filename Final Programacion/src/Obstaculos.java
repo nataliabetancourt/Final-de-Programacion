@@ -32,7 +32,7 @@ public class Obstaculos {
 	
 			break;
 		case 3:
-			fil = 8;			col = 22;
+			fil = 8;			col = 21;
 			casillas[fil][col] = 1;
 			
 			fil = 10;			col = 1;
@@ -55,7 +55,7 @@ public class Obstaculos {
 			fil = 2;			col = 12;
 			casillas[fil][col] = 1;
 			
-			fil = 3;			col = 22;
+			fil = 3;			col = 20;
 			casillas[fil][col] = 1;
 			
 			fil = 9;			col = 7;

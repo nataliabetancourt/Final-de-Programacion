@@ -31,6 +31,10 @@ public class Principal extends PApplet {
 	Obstaculos obs2, obs3, obs4, obs5, obs6, obs7, obs8, obs9;
 	// Personaje	
 	Personaje p;
+	//Enemigos
+	Enemigos eB1, eB2, eB31, eB32, eB41, eB42, eB51, eB52, eB53, eB61, eB62;
+	Enemigos eQ1, eQ21, eQ22, eQ31, eQ32, eQ41, eQ42, eQ43, eQ51, eQ52, eQ53;
+	Enemigos jefe;
 	//Inventario
 	Maletin maleta;
 	Inventario elementos1;
@@ -92,6 +96,30 @@ public class Principal extends PApplet {
 		lista5G = new ArrayList<Inventario>();				lista5N = new ArrayList<Inventario>();
 		lista6G = new ArrayList<Inventario>();				lista6N = new ArrayList<Inventario>();
 		lista7G = new ArrayList<Inventario>();				lista7N = new ArrayList<Inventario>();
+		eB1 = new Enemigos(14, 1, mapa3, this, 3);
+		eB2 = new Enemigos(22, 1, mapa4, this, 3);
+		eB31 = new Enemigos(22, 1, mapa5, this, 3);
+		eB32 = new Enemigos(4, 1, mapa5, this, 3);
+		eB41 = new Enemigos(22, 6, mapa6, this, 3);
+		eB42 = new Enemigos(22, 1, mapa6, this, 3);
+		eB51 = new Enemigos(22, 1, mapa7, this, 3);
+		eB52 = new Enemigos(22, 4, mapa7,  this, 3);
+		eB53 = new Enemigos(22, 8, mapa7,  this, 3);
+		eB61 = new Enemigos(22, 1, mapa8,  this, 3);
+		eB62 = new Enemigos(22, 4, mapa8,  this, 3);
+		eQ1 = new Enemigos(14, 4, mapa4, this, 6);
+		eQ21 = new Enemigos(14, 4, mapa4, this, 6);
+		eQ22 = new Enemigos(3, 8, mapa4, this, 6);
+		eQ31 = new Enemigos(17, 9, mapa4, this, 6);
+		eQ32 = new Enemigos(2, 10, mapa4, this, 6);
+		eQ41 = new Enemigos(5, 6, mapa4, this, 6);
+		eQ42 = new Enemigos(18, 5, mapa4, this, 6);
+		eQ43 = new Enemigos(4, 7, mapa4, this, 6);
+		eQ51 = new Enemigos(9, 6, mapa4, this, 6);
+		eQ52 = new Enemigos(2, 7, mapa4, this, 6);
+		eQ53 = new Enemigos(16, 4, mapa4, this, 6);
+		jefe = new Enemigos(20, 6, mapa10, this, 10);
+		
 		
 		//Listas de gemas y naranjas para cada pantalla
 		for (int i = 0; i < 3; i++) {
@@ -108,7 +136,7 @@ public class Principal extends PApplet {
 			lista7G.add(new Inventario(colTemp1, filTemp1, gema));	lista7N.add(new Inventario(colTemp2, filTemp2, naranja));
 		}
 		
-		pantallas = 1;
+		pantallas = 10;
 		tiempoSalida = 0;
 		clickMaleta = false;
 
@@ -195,6 +223,8 @@ public class Principal extends PApplet {
 			}
 			
 			obs3.pintar(this, arbolD, 80, 80);
+			eB1.pintarBasicoy(this);
+			eB1.moverBasicoy(2);
 			validarSalida(4, 1, 6);
 			validarRetorno(2, 11, 1);
 			break;
@@ -226,6 +256,9 @@ public class Principal extends PApplet {
 			}
 			
 			obs4.pintar(this, arbolD, 80, 80);
+			eB2.pintarBasicoy(this);
+			eB2.moverBasicoy(3);
+			eQ1.pintarQuieto(this);
 			validarSalida(5, 1, 6);
 			validarRetorno(3, 1, 6);
 			break;
@@ -257,6 +290,12 @@ public class Principal extends PApplet {
 			}
 			
 			obs5.pintar(this, arbolT, 80, 80);
+			eB31.pintarBasicoy(this);
+			eB32.pintarBasicoy(this);
+			eB31.moverBasicoy(4);
+			eB32.moverBasicoy(4);
+			eQ21.pintarQuieto(this);
+			eQ22.pintarQuieto(this);
 			validarSalida(6, 1, 6);
 			validarRetorno(4, 1, 6);
 			break;
@@ -287,6 +326,12 @@ public class Principal extends PApplet {
 				}
 			}
 			
+			eB41.pintarBasicox(this);
+			eB42.pintarBasicoy(this);
+			eB41.moverBasicox(5);
+			eB42.moverBasicoy(5);
+			eQ31.pintarQuieto(this);
+			eQ32.pintarQuieto(this);
 			obs6.pintar(this, arbolN, 80, 80);
 			validarSalida(7, 1, 6);
 			validarRetorno(5, 1, 6);
@@ -319,6 +364,15 @@ public class Principal extends PApplet {
 			}
 			
 			obs7.pintar(this, arbolD, 80, 80);
+			eB51.pintarBasicoy(this);
+			eB52.pintarBasicox(this);
+			eB53.pintarBasicox(this);
+			eB51.moverBasicoy(6);
+			eB52.moverBasicox(6);
+			eB53.moverBasicox(6);
+			eQ41.pintarQuieto(this);
+			eQ42.pintarQuieto(this);
+			eQ43.pintarQuieto(this);
 			validarSalida(8, 1, 6);
 			validarRetorno(6, 1, 6);
 			break;
@@ -349,6 +403,13 @@ public class Principal extends PApplet {
 				}
 			}
 			
+			eB61.pintarBasicoy(this);
+			eB62.pintarBasicox(this);
+			eB61.moverBasicoy(6);
+			eB62.moverBasicox(6);
+			eQ51.pintarQuieto(this);
+			eQ52.pintarQuieto(this);
+			eQ53.pintarQuieto(this);
 			obs8.pintar(this, arbolT, 80, 80);
 			validarSalida(9, 1, 6);
 			validarRetorno(7, 1, 6);
@@ -357,7 +418,6 @@ public class Principal extends PApplet {
 			p.setRefMapa(mapa9);
 			p.setObs(obs9);
 			mapa9.pintar(this);
-			obs9.pintar(this, arbolN, 80, 80);
 			
 			//Validar salida especial por ubicacion del circulo
 			if (dist(p.getX(), p.getY(), mapa3.getxSalida3(), mapa3.getySalida3())<25) {
@@ -375,6 +435,8 @@ public class Principal extends PApplet {
 		case 10:
 			p.setRefMapa(mapa10);
 			mapa10.pintar(this);
+			jefe.pintarJefe(this);
+			jefe.moverJefe();
 			break;
 		}
 		
