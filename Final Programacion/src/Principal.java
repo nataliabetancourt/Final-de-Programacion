@@ -31,6 +31,8 @@ public class Principal extends PApplet {
 	Obstaculos obs2, obs3, obs4, obs5, obs6, obs7, obs8, obs9;
 	// Personaje	
 	Personaje p;
+	//bala
+	Bala B;
 	//Enemigos
 	Enemigos eB1, eB2, eB31, eB32, eB41, eB42, eB51, eB52, eB53, eB61, eB62;
 	Enemigos eQ1, eQ21, eQ22, eQ31, eQ32, eQ41, eQ42, eQ43, eQ51, eQ52, eQ53;
@@ -50,9 +52,13 @@ public class Principal extends PApplet {
 	boolean clickMaleta;
 	//Fotos inventario
 	PImage gema, naranja;
+	// contadores y swiches para verificar estados
+	int cont1, cont11, cont2, cont22, cont3, cont33, cont4, cont44, contA, contB;
+	boolean donw, up, izq, der, atack, shot;
 
 	@Override
 	public void setup() {
+
 		//Pantalla 1														//Pantalla 2
 		portada	= loadImage("Portada-01.jpg");				cueva = loadImage("cueva_texturizado.png");
 		// Pantalla 3 														//Pantalla 4
@@ -87,7 +93,8 @@ public class Principal extends PApplet {
 		mapa8 = new Mapa(tarde, 8, salida1, retorno1);				obs8 = new Obstaculos(8);
 		mapa9 = new Mapa(castilloExterior, 9, salida1, retorno1);	obs9 = new Obstaculos(9);
 		mapa10 = new Mapa(castilloInterior, 10, salida1, retorno1);
-		p = new Personaje(11, 1, mapa2, obs2);
+		p = new Personaje(11, 1, mapa2, obs2,this,5);
+		B = new Bala(p.getX(), p.getY(), this);
 		maleta = new Maletin();
 		listaG = new ArrayList<Inventario>();					listaN = new ArrayList<Inventario>();
 		lista2G = new ArrayList<Inventario>();				lista2N = new ArrayList<Inventario>();
@@ -136,7 +143,7 @@ public class Principal extends PApplet {
 			lista7G.add(new Inventario(colTemp1, filTemp1, gema));	lista7N.add(new Inventario(colTemp2, filTemp2, naranja));
 		}
 		
-		pantallas = 10;
+		pantallas = 1;
 		tiempoSalida = 0;
 		clickMaleta = false;
 
@@ -443,6 +450,273 @@ public class Principal extends PApplet {
 		if (pantallas > 1) {
 			p.pintar(this);
 			maleta.pintar(this, m);
+p.miraLife(this);
+			
+			if (atack == true && p.getdir() == 2) {
+				contA++;
+				p.atckw(this);
+
+				if (contA >= 30) {
+					atack = false;
+					contA = 0;
+				}
+			}
+
+			if (atack == true && p.getdir() == 3) {
+				contA++;
+				p.atcka(this);
+
+				if (contA >= 30) {
+					atack = false;
+					contA = 0;
+				}
+			}
+
+			if (pantallas > 1) {
+				p.pintar(this);
+
+				switch (p.getdir()) {
+				case 0:
+					if (donw == false) {
+						p.pintarS(this);
+					}
+					if (donw == true) {
+
+						switch (cont11) {
+
+						case 0:
+							p.pintarS1(this);
+							break;
+						case 1:
+							p.pintarS2(this);
+							break;
+						case 2:
+							p.pintarS3(this);
+							break;
+						case 3:
+							p.pintarS4(this);
+							break;
+						case 4:
+							p.pintarS4(this);
+							break;
+						case 5:
+							p.pintarS3(this);
+							break;
+						case 6:
+							p.pintarS2(this);
+							break;
+						case 7:
+							p.pintarS1(this);
+							break;
+
+						default:
+							break;
+						}
+
+						cont1++;
+						if (cont1 >= 10) {
+							cont1 = 0;
+						}
+						if (cont1 == 9) {
+							cont11++;
+							if (cont11 >= 8) {
+								cont11 = 0;
+							}
+						}
+
+					}
+					break;
+				case 1:
+
+					if (der == false) {
+						p.pintarD(this);
+					}
+					if (der == true) {
+
+						switch (cont44) {
+
+						case 0:
+							p.pintarA1(this);
+							break;
+						case 1:
+							p.pintarA2(this);
+							break;
+						case 2:
+							p.pintarA3(this);
+							break;
+						case 3:
+							p.pintarA4(this);
+							break;
+						case 4:
+							p.pintarA4(this);
+							break;
+						case 5:
+							p.pintarA3(this);
+							break;
+						case 6:
+							p.pintarA2(this);
+							break;
+						case 7:
+							p.pintarA1(this);
+							break;
+
+						default:
+							break;
+						}
+
+						cont4++;
+						if (cont4 >= 10) {
+							cont4 = 0;
+						}
+						if (cont4 == 9) {
+							cont44++;
+							if (cont44 >= 8) {
+								cont44 = 0;
+							}
+						}
+
+					}
+
+					break;
+				case 2:
+					if (up == false) {
+						p.pintarW(this);
+					}
+					if (up == true) {
+
+						switch (cont22) {
+
+						case 0:
+							p.pintarW1(this);
+							break;
+						case 1:
+							p.pintarW2(this);
+							break;
+						case 2:
+							p.pintarW3(this);
+							break;
+						case 3:
+							p.pintarW4(this);
+							break;
+						case 4:
+							p.pintarW4(this);
+							break;
+						case 5:
+							p.pintarW3(this);
+							break;
+						case 6:
+							p.pintarW2(this);
+							break;
+						case 7:
+							p.pintarW1(this);
+							break;
+
+						default:
+							break;
+						}
+
+						cont2++;
+						if (cont2 >= 10) {
+							cont2 = 0;
+						}
+						if (cont2 == 9) {
+							cont22++;
+							if (cont22 >= 8) {
+								cont22 = 0;
+							}
+						}
+
+					}
+					break;
+				case 3:
+					if (izq == false) {
+						p.pintarA(this);
+					}
+					if (izq == true) {
+
+						switch (cont33) {
+
+						case 0:
+							p.pintarD1(this);
+							break;
+						case 1:
+							p.pintarD2(this);
+							break;
+						case 2:
+							p.pintarD3(this);
+							break;
+						case 3:
+							p.pintarD4(this);
+							break;
+						case 4:
+							p.pintarD4(this);
+							break;
+						case 5:
+							p.pintarD3(this);
+							break;
+						case 6:
+							p.pintarD2(this);
+							break;
+						case 7:
+							p.pintarD1(this);
+							break;
+
+						default:
+							break;
+						}
+
+						cont3++;
+						if (cont3 >= 10) {
+							cont3 = 0;
+						}
+						if (cont3 == 9) {
+							cont33++;
+							if (cont33 >= 8) {
+								cont33 = 0;
+							}
+						}
+
+					}
+					break;
+
+				default:
+					break;
+				}
+			}
+
+			if (atack == true && p.getdir() == 0) {
+				contA++;
+				p.atcks(this);
+
+				if (contA >= 30) {
+					atack = false;
+					contA = 0;
+				}
+
+			}
+
+			if (atack == true && p.getdir() == 1) {
+				contA++;
+				p.atckd(this);
+
+				if (contA >= 30) {
+					atack = false;
+					contA = 0;
+				}
+			}
+
+			if (shot == true) {
+				contB++;
+				B.shot(this, p.getdir());
+
+				if (contB >= 40) {
+					shot = false;
+					contB = 0;
+					B.setX(p.getX());
+					B.setY(p.getY());
+				
+				}
+			}
 		}
 		
 		if (clickMaleta == true) {
@@ -479,19 +753,50 @@ public class Principal extends PApplet {
 		switch (key) {
 		case 'w':
 			p.mover("arriba");
+			
+			up = true;
 			break;
 		case 's':
 			p.mover("abajo");
+			donw = true;
 			break;
 		case 'a':
 			p.mover("izquierda");
+			izq = true;
 			break;
 		case 'd':
 			p.mover("derecha");
+			der = true;
 			break;
-
+		case 'p':
+			atack = true;
+			break;
+		case 'o':
+			shot = true;
+			break;
 		}
 	}
+
+	public void keyReleased() {
+		if (key == 's') {
+			donw = false;
+			cont1 = 0;
+		}
+		if (key == 'w') {
+			up = false;
+			cont2 = 0;
+		}
+		if (key == 'd') {
+			der = false;
+			cont4 = 0;
+
+		}
+		if (key == 'a') {
+			izq = false;
+			cont3 = 0;
+		}
+	}
+
 	
 	@Override
 	public void mousePressed() {
