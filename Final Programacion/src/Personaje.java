@@ -88,111 +88,105 @@ public class Personaje {
 		this.korazon = app.loadImage("korazom.png");
 	}
 
-	public void pintar(PApplet app) {
-		app.noStroke();
-		app.fill(255, 0, 0);
-		app.circle(x, y, 25);
-	}
-
 	public void pintarS(PApplet app) {
-		app.image(frente, x, y, 66, 92);
+		app.image(frente, x, y-25, 66, 92);
 	}
 
 	public void pintarS1(PApplet app) {
-		app.image(frente1, x, y, 66, 92);
+		app.image(frente1, x, y-25, 66, 92);
 	}
 
 	public void pintarS2(PApplet app) {
-		app.image(frente2, x, y, 66, 92);
+		app.image(frente2, x, y-25, 66, 92);
 	}
 
 	public void pintarS3(PApplet app) {
-		app.image(frente3, x, y, 66, 92);
+		app.image(frente3, x, y-25, 66, 92);
 	}
 
 	public void pintarS4(PApplet app) {
-		app.image(frente4, x, y, 66, 92);
+		app.image(frente4, x, y-25, 66, 92);
 	}
 
 	public void pintarW(PApplet app) {
-		app.image(espalda, x, y, 66, 92);
+		app.image(espalda, x, y-25, 66, 92);
 	}
 
 	public void pintarW1(PApplet app) {
-		app.image(espalda1, x, y, 70, 92);
+		app.image(espalda1, x, y-25, 70, 92);
 	}
 
 	public void pintarW2(PApplet app) {
-		app.image(espalda2, x, y, 70, 92);
+		app.image(espalda2, x, y-25, 70, 92);
 	}
 
 	public void pintarW3(PApplet app) {
-		app.image(espalda3, x, y, 70, 92);
+		app.image(espalda3, x, y-25, 70, 92);
 	}
 
 	public void pintarW4(PApplet app) {
-		app.image(espalda4, x, y, 70, 92);
+		app.image(espalda4, x, y-25, 70, 92);
 	}
 
 	public void pintarD(PApplet app) {
-		app.image(derecha, x, y, 66, 92);
+		app.image(derecha, x, y-25, 66, 92);
 	}
 
 	public void pintarD1(PApplet app) {
-		app.image(derecha1, x, y, 81, 92);
+		app.image(derecha1, x, y-25, 81, 92);
 	}
 
 	public void pintarD2(PApplet app) {
-		app.image(derecha2, x, y, 81, 92);
+		app.image(derecha2, x, y-25, 81, 92);
 	}
 
 	public void pintarD3(PApplet app) {
-		app.image(derecha3, x, y, 81, 92);
+		app.image(derecha3, x, y-25, 81, 92);
 	}
 
 	public void pintarD4(PApplet app) {
-		app.image(derecha4, x, y, 81, 92);
+		app.image(derecha4, x, y-25, 81, 92);
 	}
 
 	public void pintarA(PApplet app) {
-		app.image(izquierda, x, y, 66, 92);
+		app.image(izquierda, x, y-25, 66, 92);
 	}
 
 	public void pintarA1(PApplet app) {
-		app.image(izquierda1, x, y, 81, 92);
+		app.image(izquierda1, x, y-25, 81, 92);
 	}
 
 	public void pintarA2(PApplet app) {
-		app.image(izquierda2, x, y, 81, 92);
+		app.image(izquierda2, x, y-25, 81, 92);
 	}
 
 	public void pintarA3(PApplet app) {
-		app.image(izquierda3, x, y, 81, 92);
+		app.image(izquierda3, x, y-25, 81, 92);
 	}
 
 	public void pintarA4(PApplet app) {
-		app.image(izquierda4, x, y, 81, 92);
+		app.image(izquierda4, x, y-25, 81, 92);
 	}
 
 	public void atckw(PApplet app) {
-		app.image(atac0, x, y - 25, 132, 92);
+		app.image(atac0, x, y - 50, 132, 92);
 	}
 
 	public void atcks(PApplet app) {
-		app.image(atac2, x, y + 25, 132, 92);
+		app.image(atac2, x, y, 132, 92);
 	}
 
 	public void atckd(PApplet app) {
-		app.image(atac1, x + 25, y, 132, 92);
+		app.image(atac1, x + 25, y - 25, 132, 92);
 	}
 
 	public void atcka(PApplet app) {
-		app.image(atac3, x - 25, y, 132, 92);
+		app.image(atac3, x - 25, y - 25, 132, 92);
 	}
 
 	public void miraLife(PApplet app) {
 		for (int i = 0; i < life; i++) {
-			app.image(korazon, 50+(i*50), 50, 140,100);
+			app.image(korazon, 50+(i*50), 25, 140,100);
 		
 		}
 	}

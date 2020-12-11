@@ -448,9 +448,8 @@ public class Principal extends PApplet {
 		}
 		
 		if (pantallas > 1) {
-			p.pintar(this);
 			maleta.pintar(this, m);
-p.miraLife(this);
+			p.miraLife(this);
 			
 			if (atack == true && p.getdir() == 2) {
 				contA++;
@@ -473,7 +472,6 @@ p.miraLife(this);
 			}
 
 			if (pantallas > 1) {
-				p.pintar(this);
 
 				switch (p.getdir()) {
 				case 0:
@@ -746,6 +744,13 @@ p.miraLife(this);
 				tiempoSalida = 0;
 			}
 		}
+	}
+	
+	public  void validarEnemigo(Enemigos ref) {
+		if (dist(p.getX(), p.getY(), ref.getX(), ref.getY())<75) {
+			System.err.println("si");
+		}
+
 	}
 	
 	@Override

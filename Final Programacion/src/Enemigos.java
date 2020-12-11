@@ -164,5 +164,13 @@ public class Enemigos {
 	public void setLife(int life) {
 		this.life = life;
 	}
+	
+	public int getX() {
+		return x;
+	}
+	
+	public int getY() {
+		return y;
+	}
 
 }
