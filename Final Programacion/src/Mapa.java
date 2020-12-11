@@ -37,6 +37,14 @@ public class Mapa {
 			casillas[j][0] = 1;
 			casillas[j][23] = 1;
 		}
+		
+		//Borde castillo
+		if (pantalla == 9) {
+			for (int j = 0; j < 14; j++) {
+				casillas[j][0] = 1;
+				casillas[j][21] = 1;
+			}
+		}
 
 		//Salida pantallas 3-6
 		this.col = 22;

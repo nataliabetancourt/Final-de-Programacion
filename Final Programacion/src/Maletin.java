@@ -93,7 +93,4 @@ public class Maletin {
 		return y2;
 	}
 
-	public void setCasillas(int fil, int col) {
-		this.casillas[fil][col] = 1;
-	}
 }
