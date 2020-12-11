@@ -51,6 +51,7 @@ public class Mapa {
 
 	}
 
+	
 	public void pintar(PApplet app, PImage imgO) {
 		// Coordenadas de inicio de la matriz
 		int x = 25;
