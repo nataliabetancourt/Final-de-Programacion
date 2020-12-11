@@ -20,6 +20,7 @@ public class Personaje {
 	}
 	
 	public void pintar(PApplet app) {
+		app.noStroke();
 		app.fill(255, 0, 0);
 		app.circle(x, y, 25);
 	}
