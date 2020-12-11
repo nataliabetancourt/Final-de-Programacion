@@ -15,36 +15,42 @@ public class Principal extends PApplet {
 
 	}
 
-	// Fotos de fondo												
-	PImage portada, cueva, dia1, dia2, tarde, noche, castilloExterior, castilloInterior;		
+	// contadores y swiches para verificar estados
+	int cont1, cont11, cont2, cont22, cont3, cont33, cont4, cont44, contA, contB;
+	boolean donw, up, izq, der, atack, shot;
+	// Fotos de fondo
+	PImage portada, cueva, dia1, dia2, tarde, noche, castilloExterior, castilloInterior;
 	// Fotos de obstaculos
 	PImage arbolD, arbolT, arbolN, ladrillo;
-	//Foto de inventario										
+	// Foto de inventario
 	PImage m, nota;
-	//Foto decoracion
+	// Foto decoracion
 	PImage cama, tapete, closet;
-	//Fotos botones
+	// Fotos botones
 	PImage start, salida1, salida2, retorno1, retorno2;
-	// Matriz																
-	Mapa mapa2, mapa3, mapa4, mapa5, mapa6, mapa7, mapa8, mapa9, mapa10;		
-	//Obstaculos	
+	// Matriz
+	Mapa mapa2, mapa3, mapa4, mapa5, mapa6, mapa7, mapa8, mapa9, mapa10;
+	// Obstaculos
 	Obstaculos obs2, obs3, obs4, obs5, obs6, obs7, obs8, obs9;
-	// Personaje	
+	// Personaje
 	Personaje p;
-	//Inventario
+	//bala
+	Bala B;
+	// Inventario
 	Maletin maleta;
 	Inventario elementos1;
-	public ArrayList<Inventario> listaG, listaN, lista2G,  lista2N;
-	public ArrayList<Inventario> lista3G, lista3N, lista4G,  lista4N;
-	public ArrayList<Inventario> lista5G, lista5N, lista6G,  lista6N;
-	public ArrayList<Inventario> lista7G, lista7N, lista8G,  lista8N;
+	public ArrayList<Inventario> listaG, listaN, lista2G, lista2N;
+	public ArrayList<Inventario> lista3G, lista3N, lista4G, lista4N;
+	public ArrayList<Inventario> lista5G, lista5N, lista6G, lista6N;
+	public ArrayList<Inventario> lista7G, lista7N, lista8G, lista8N;
 	// Estado de las pantallas
 	int pantallas;
-	//Indicador de tiempo sobre circulo de salida para pantallas, al llegar a 100, cambia de pantalla
+	// Indicador de tiempo sobre circulo de salida para pantallas, al llegar a 100,
+	// cambia de pantalla
 	int tiempoSalida;
-	//Indicar de que si se hizo click sobre el maletin
+	// Indicar de que si se hizo click sobre el maletin
 	boolean clickMaleta;
-	//Fotos inventario
+	// Fotos inventario
 	PImage gema, naranja;
 
 	@Override
@@ -83,7 +89,8 @@ public class Principal extends PApplet {
 		mapa8 = new Mapa(tarde, 8, salida1, retorno1);				obs8 = new Obstaculos(8);
 		mapa9 = new Mapa(castilloExterior, 9, salida1, retorno1);	obs9 = new Obstaculos(9);
 		mapa10 = new Mapa(castilloInterior, 10, salida1, retorno1);
-		p = new Personaje(11, 1, mapa2, obs2);
+		p = new Personaje(11, 1, mapa2, obs2,this,5);
+		B = new Bala(p.getX(), p.getY(), this);
 		maleta = new Maletin();
 		listaG = new ArrayList<Inventario>();					listaN = new ArrayList<Inventario>();
 		lista2G = new ArrayList<Inventario>();				lista2N = new ArrayList<Inventario>();
@@ -112,6 +119,18 @@ public class Principal extends PApplet {
 		tiempoSalida = 0;
 		clickMaleta = false;
 
+		cont1=0; 
+		cont11=0;
+		cont2=0;
+		cont22=0;
+		cont3=0;
+		cont33=0; 
+		cont4=0; 
+		cont44=0; 
+		contA=0; 
+		contB=0;
+		donw=false; up=false; izq=false; der=false; atack=false; shot=false;
+		
 	}
 
 	@Override
@@ -122,7 +141,7 @@ public class Principal extends PApplet {
 			imageMode(CORNER);
 			image(portada, 0, 0);
 			imageMode(CENTER);
-			image(start, width/2, 500, 200, 50);
+			image(start, width / 2, 500, 200, 50);
 			break;
 		case 2:
 			mapa2.pintar(this);
@@ -131,33 +150,33 @@ public class Principal extends PApplet {
 			image(cama, 50, 50, 315, 315);
 			image(tapete, 325, 150, 95, 125);
 			image(closet, 1100, 50, 100, 200);
-			
-			//Gemas regados por mapa
+
+			// Gemas regados por mapa
 			for (int i = 0; i < listaG.size(); i++) {
 				Inventario actual = listaG.get(i);
 				actual.pintar(this);
-				
-				if (dist(p.getX(), p.getY(), actual.getX(), actual.getY())<5) {
+
+				if (dist(p.getX(), p.getY(), actual.getX(), actual.getY()) < 5) {
 					maleta.agregarGema(listaG.get(i));
 					listaG.remove(i);
 				}
 			}
-			
-			//Naranjas regados por el mapa
+
+			// Naranjas regados por el mapa
 			for (int i = 0; i < listaN.size(); i++) {
 				Inventario actual = listaN.get(i);
 				actual.pintar(this);
-				
-				if (dist(p.getX(), p.getY(), actual.getX(), actual.getY())<5) {
+
+				if (dist(p.getX(), p.getY(), actual.getX(), actual.getY()) < 5) {
 					maleta.agregarNaranja(listaN.get(i));
 					listaN.remove(i);
 				}
 			}
-			
+
 			obs2.pintar(this, ladrillo, 121, 92);
 
-			//Validar salida especial por ubicacion del circulo
-			if (dist(p.getX(), p.getY(), mapa3.getxSalida2(), mapa3.getySalida2())<25) {
+			// Validar salida especial por ubicacion del circulo
+			if (dist(p.getX(), p.getY(), mapa3.getxSalida2(), mapa3.getySalida2()) < 25) {
 				tiempoSalida++;
 				if (tiempoSalida == 100) {
 					p.setCol(11);
@@ -171,29 +190,29 @@ public class Principal extends PApplet {
 			p.setRefMapa(mapa3);
 			p.setObs(obs3);
 			mapa3.pintar(this);
-			
-			//Gemas regados por mapa
+
+			// Gemas regados por mapa
 			for (int i = 0; i < lista2G.size(); i++) {
 				Inventario actual = lista2G.get(i);
 				actual.pintar(this);
-				
-				if (dist(p.getX(), p.getY(), actual.getX(), actual.getY())<5) {
+
+				if (dist(p.getX(), p.getY(), actual.getX(), actual.getY()) < 5) {
 					maleta.agregarGema(lista2G.get(i));
 					lista2G.remove(i);
 				}
 			}
-			
-			//Naranjas regados por el mapa
+
+			// Naranjas regados por el mapa
 			for (int i = 0; i < lista2N.size(); i++) {
 				Inventario actual = lista2N.get(i);
 				actual.pintar(this);
-				
-				if (dist(p.getX(), p.getY(), actual.getX(), actual.getY())<5) {
+
+				if (dist(p.getX(), p.getY(), actual.getX(), actual.getY()) < 5) {
 					maleta.agregarNaranja(lista2N.get(i));
 					lista2N.remove(i);
 				}
 			}
-			
+
 			obs3.pintar(this, arbolD, 80, 80);
 			validarSalida(4, 1, 6);
 			validarRetorno(2, 11, 1);
@@ -202,29 +221,29 @@ public class Principal extends PApplet {
 			p.setRefMapa(mapa4);
 			p.setObs(obs4);
 			mapa4.pintar(this);
-			
-			//Gemas regados por mapa
+
+			// Gemas regados por mapa
 			for (int i = 0; i < lista3G.size(); i++) {
 				Inventario actual = lista3G.get(i);
 				actual.pintar(this);
-				
-				if (dist(p.getX(), p.getY(), actual.getX(), actual.getY())<5) {
+
+				if (dist(p.getX(), p.getY(), actual.getX(), actual.getY()) < 5) {
 					maleta.agregarGema(lista3G.get(i));
 					lista3G.remove(i);
 				}
 			}
-			
-			//Naranjas regados por el mapa
+
+			// Naranjas regados por el mapa
 			for (int i = 0; i < lista3N.size(); i++) {
 				Inventario actual = lista3N.get(i);
 				actual.pintar(this);
-				
-				if (dist(p.getX(), p.getY(), actual.getX(), actual.getY())<5) {
+
+				if (dist(p.getX(), p.getY(), actual.getX(), actual.getY()) < 5) {
 					maleta.agregarNaranja(lista3N.get(i));
 					lista3N.remove(i);
 				}
 			}
-			
+
 			obs4.pintar(this, arbolD, 80, 80);
 			validarSalida(5, 1, 6);
 			validarRetorno(3, 1, 6);
@@ -233,29 +252,29 @@ public class Principal extends PApplet {
 			p.setRefMapa(mapa5);
 			p.setObs(obs5);
 			mapa5.pintar(this);
-		
-			//Gemas regados por mapa
+
+			// Gemas regados por mapa
 			for (int i = 0; i < lista4G.size(); i++) {
 				Inventario actual = lista4G.get(i);
 				actual.pintar(this);
-				
-				if (dist(p.getX(), p.getY(), actual.getX(), actual.getY())<5) {
+
+				if (dist(p.getX(), p.getY(), actual.getX(), actual.getY()) < 5) {
 					maleta.agregarGema(lista4G.get(i));
 					lista4G.remove(i);
 				}
 			}
-			
-			//Naranjas regados por el mapa
+
+			// Naranjas regados por el mapa
 			for (int i = 0; i < lista4N.size(); i++) {
 				Inventario actual = lista4N.get(i);
 				actual.pintar(this);
-				
-				if (dist(p.getX(), p.getY(), actual.getX(), actual.getY())<5) {
+
+				if (dist(p.getX(), p.getY(), actual.getX(), actual.getY()) < 5) {
 					maleta.agregarNaranja(lista4N.get(i));
 					lista4N.remove(i);
 				}
 			}
-			
+
 			obs5.pintar(this, arbolT, 80, 80);
 			validarSalida(6, 1, 6);
 			validarRetorno(4, 1, 6);
@@ -264,29 +283,29 @@ public class Principal extends PApplet {
 			p.setRefMapa(mapa6);
 			p.setObs(obs6);
 			mapa6.pintar(this);
-			
-			//Gemas regados por mapa
+
+			// Gemas regados por mapa
 			for (int i = 0; i < lista5G.size(); i++) {
 				Inventario actual = lista5G.get(i);
 				actual.pintar(this);
-				
-				if (dist(p.getX(), p.getY(), actual.getX(), actual.getY())<5) {
+
+				if (dist(p.getX(), p.getY(), actual.getX(), actual.getY()) < 5) {
 					maleta.agregarGema(lista5G.get(i));
 					lista5G.remove(i);
 				}
 			}
-			
-			//Naranjas regados por el mapa
+
+			// Naranjas regados por el mapa
 			for (int i = 0; i < lista5N.size(); i++) {
 				Inventario actual = lista5N.get(i);
 				actual.pintar(this);
-				
-				if (dist(p.getX(), p.getY(), actual.getX(), actual.getY())<5) {
+
+				if (dist(p.getX(), p.getY(), actual.getX(), actual.getY()) < 5) {
 					maleta.agregarNaranja(lista5N.get(i));
 					lista5N.remove(i);
 				}
 			}
-			
+
 			obs6.pintar(this, arbolN, 80, 80);
 			validarSalida(7, 1, 6);
 			validarRetorno(5, 1, 6);
@@ -295,29 +314,29 @@ public class Principal extends PApplet {
 			p.setRefMapa(mapa7);
 			p.setObs(obs7);
 			mapa7.pintar(this);
-			
-			//Gemas regados por mapa
+
+			// Gemas regados por mapa
 			for (int i = 0; i < lista6G.size(); i++) {
 				Inventario actual = lista6G.get(i);
 				actual.pintar(this);
-				
-				if (dist(p.getX(), p.getY(), actual.getX(), actual.getY())<5) {
+
+				if (dist(p.getX(), p.getY(), actual.getX(), actual.getY()) < 5) {
 					maleta.agregarGema(lista6G.get(i));
 					lista6G.remove(i);
 				}
 			}
-			
-			//Naranjas regados por el mapa
+
+			// Naranjas regados por el mapa
 			for (int i = 0; i < lista6N.size(); i++) {
 				Inventario actual = lista6N.get(i);
 				actual.pintar(this);
-				
-				if (dist(p.getX(), p.getY(), actual.getX(), actual.getY())<5) {
+
+				if (dist(p.getX(), p.getY(), actual.getX(), actual.getY()) < 5) {
 					maleta.agregarNaranja(lista6N.get(i));
 					lista6N.remove(i);
 				}
 			}
-			
+
 			obs7.pintar(this, arbolD, 80, 80);
 			validarSalida(8, 1, 6);
 			validarRetorno(6, 1, 6);
@@ -326,29 +345,29 @@ public class Principal extends PApplet {
 			p.setRefMapa(mapa8);
 			p.setObs(obs8);
 			mapa8.pintar(this);
-			
-			//Gemas regados por mapa
+
+			// Gemas regados por mapa
 			for (int i = 0; i < lista7G.size(); i++) {
 				Inventario actual = lista7G.get(i);
 				actual.pintar(this);
-				
-				if (dist(p.getX(), p.getY(), actual.getX(), actual.getY())<5) {
+
+				if (dist(p.getX(), p.getY(), actual.getX(), actual.getY()) < 5) {
 					maleta.agregarGema(lista7G.get(i));
 					lista7G.remove(i);
 				}
 			}
-			
-			//Naranjas regados por el mapa
+
+			// Naranjas regados por el mapa
 			for (int i = 0; i < lista7N.size(); i++) {
 				Inventario actual = lista7N.get(i);
 				actual.pintar(this);
-				
-				if (dist(p.getX(), p.getY(), actual.getX(), actual.getY())<5) {
+
+				if (dist(p.getX(), p.getY(), actual.getX(), actual.getY()) < 5) {
 					maleta.agregarNaranja(lista7N.get(i));
 					lista7N.remove(i);
 				}
 			}
-			
+
 			obs8.pintar(this, arbolT, 80, 80);
 			validarSalida(9, 1, 6);
 			validarRetorno(7, 1, 6);
@@ -358,9 +377,9 @@ public class Principal extends PApplet {
 			p.setObs(obs9);
 			mapa9.pintar(this);
 			obs9.pintar(this, arbolN, 80, 80);
-			
-			//Validar salida especial por ubicacion del circulo
-			if (dist(p.getX(), p.getY(), mapa3.getxSalida3(), mapa3.getySalida3())<25) {
+
+			// Validar salida especial por ubicacion del circulo
+			if (dist(p.getX(), p.getY(), mapa3.getxSalida3(), mapa3.getySalida3()) < 25) {
 				tiempoSalida++;
 				if (tiempoSalida == 100) {
 					p.setCol(1);
@@ -369,7 +388,7 @@ public class Principal extends PApplet {
 					tiempoSalida = 0;
 				}
 			}
-		
+
 			validarRetorno(8, 1, 6);
 			break;
 		case 10:
@@ -377,19 +396,288 @@ public class Principal extends PApplet {
 			mapa10.pintar(this);
 			break;
 		}
-		
+
 		if (pantallas > 1) {
 			p.pintar(this);
 			maleta.pintar(this, m);
+			p.miraLife(this);
+			
+			if (atack == true && p.getdir() == 2) {
+				contA++;
+				p.atckw(this);
+
+				if (contA >= 30) {
+					atack = false;
+					contA = 0;
+				}
+			}
+
+			if (atack == true && p.getdir() == 3) {
+				contA++;
+				p.atcka(this);
+
+				if (contA >= 30) {
+					atack = false;
+					contA = 0;
+				}
+			}
+
+			if (pantallas > 1) {
+				p.pintar(this);
+
+				switch (p.getdir()) {
+				case 0:
+					if (donw == false) {
+						p.pintarS(this);
+					}
+					if (donw == true) {
+
+						switch (cont11) {
+
+						case 0:
+							p.pintarS1(this);
+							break;
+						case 1:
+							p.pintarS2(this);
+							break;
+						case 2:
+							p.pintarS3(this);
+							break;
+						case 3:
+							p.pintarS4(this);
+							break;
+						case 4:
+							p.pintarS4(this);
+							break;
+						case 5:
+							p.pintarS3(this);
+							break;
+						case 6:
+							p.pintarS2(this);
+							break;
+						case 7:
+							p.pintarS1(this);
+							break;
+
+						default:
+							break;
+						}
+
+						cont1++;
+						if (cont1 >= 10) {
+							cont1 = 0;
+						}
+						if (cont1 == 9) {
+							cont11++;
+							if (cont11 >= 8) {
+								cont11 = 0;
+							}
+						}
+
+					}
+					break;
+				case 1:
+
+					if (der == false) {
+						p.pintarD(this);
+					}
+					if (der == true) {
+
+						switch (cont44) {
+
+						case 0:
+							p.pintarA1(this);
+							break;
+						case 1:
+							p.pintarA2(this);
+							break;
+						case 2:
+							p.pintarA3(this);
+							break;
+						case 3:
+							p.pintarA4(this);
+							break;
+						case 4:
+							p.pintarA4(this);
+							break;
+						case 5:
+							p.pintarA3(this);
+							break;
+						case 6:
+							p.pintarA2(this);
+							break;
+						case 7:
+							p.pintarA1(this);
+							break;
+
+						default:
+							break;
+						}
+
+						cont4++;
+						if (cont4 >= 10) {
+							cont4 = 0;
+						}
+						if (cont4 == 9) {
+							cont44++;
+							if (cont44 >= 8) {
+								cont44 = 0;
+							}
+						}
+
+					}
+
+					break;
+				case 2:
+					if (up == false) {
+						p.pintarW(this);
+					}
+					if (up == true) {
+
+						switch (cont22) {
+
+						case 0:
+							p.pintarW1(this);
+							break;
+						case 1:
+							p.pintarW2(this);
+							break;
+						case 2:
+							p.pintarW3(this);
+							break;
+						case 3:
+							p.pintarW4(this);
+							break;
+						case 4:
+							p.pintarW4(this);
+							break;
+						case 5:
+							p.pintarW3(this);
+							break;
+						case 6:
+							p.pintarW2(this);
+							break;
+						case 7:
+							p.pintarW1(this);
+							break;
+
+						default:
+							break;
+						}
+
+						cont2++;
+						if (cont2 >= 10) {
+							cont2 = 0;
+						}
+						if (cont2 == 9) {
+							cont22++;
+							if (cont22 >= 8) {
+								cont22 = 0;
+							}
+						}
+
+					}
+					break;
+				case 3:
+					if (izq == false) {
+						p.pintarA(this);
+					}
+					if (izq == true) {
+
+						switch (cont33) {
+
+						case 0:
+							p.pintarD1(this);
+							break;
+						case 1:
+							p.pintarD2(this);
+							break;
+						case 2:
+							p.pintarD3(this);
+							break;
+						case 3:
+							p.pintarD4(this);
+							break;
+						case 4:
+							p.pintarD4(this);
+							break;
+						case 5:
+							p.pintarD3(this);
+							break;
+						case 6:
+							p.pintarD2(this);
+							break;
+						case 7:
+							p.pintarD1(this);
+							break;
+
+						default:
+							break;
+						}
+
+						cont3++;
+						if (cont3 >= 10) {
+							cont3 = 0;
+						}
+						if (cont3 == 9) {
+							cont33++;
+							if (cont33 >= 8) {
+								cont33 = 0;
+							}
+						}
+
+					}
+					break;
+
+				default:
+					break;
+				}
+			}
+
+			if (atack == true && p.getdir() == 0) {
+				contA++;
+				p.atcks(this);
+
+				if (contA >= 30) {
+					atack = false;
+					contA = 0;
+				}
+
+			}
+
+			if (atack == true && p.getdir() == 1) {
+				contA++;
+				p.atckd(this);
+
+				if (contA >= 30) {
+					atack = false;
+					contA = 0;
+				}
+			}
+
+			if (shot == true) {
+				contB++;
+				B.shot(this, p.getdir());
+
+				if (contB >= 40) {
+					shot = false;
+					contB = 0;
+					B.setX(p.getX());
+					B.setY(p.getY());
+				
+				}
+			}
+			
+			
 		}
-		
+
 		if (clickMaleta == true) {
 			maleta.pintarAbierto(this, gema, naranja);
 		}
 	}
-	
+
 	public void validarSalida(int pantalla, int col, int fil) {
-		if (dist(p.getX(), p.getY(), mapa3.getxSalida(), mapa3.getySalida())<25) {
+		if (dist(p.getX(), p.getY(), mapa3.getxSalida(), mapa3.getySalida()) < 25) {
 			tiempoSalida++;
 			if (tiempoSalida == 100) {
 				p.setCol(col);
@@ -399,9 +687,9 @@ public class Principal extends PApplet {
 			}
 		}
 	}
-	
+
 	public void validarRetorno(int pantalla, int col, int fil) {
-		if (dist(p.getX(), p.getY(), mapa3.getxRetorno(), mapa3.getyRetorno())<25) {
+		if (dist(p.getX(), p.getY(), mapa3.getxRetorno(), mapa3.getyRetorno()) < 25) {
 			tiempoSalida++;
 			if (tiempoSalida == 100) {
 				p.setCol(col);
@@ -411,35 +699,65 @@ public class Principal extends PApplet {
 			}
 		}
 	}
-	
+
 	@Override
 	public void keyPressed() {
 		switch (key) {
 		case 'w':
 			p.mover("arriba");
+			
+			up = true;
 			break;
 		case 's':
 			p.mover("abajo");
+			donw = true;
 			break;
 		case 'a':
 			p.mover("izquierda");
+			izq = true;
 			break;
 		case 'd':
 			p.mover("derecha");
+			der = true;
 			break;
-
+		case 'p':
+			atack = true;
+			break;
+		case 'o':
+			shot = true;
+			break;
 		}
 	}
-	
+
+	public void keyReleased() {
+		if (key == 's') {
+			donw = false;
+			cont1 = 0;
+		}
+		if (key == 'w') {
+			up = false;
+			cont2 = 0;
+		}
+		if (key == 'd') {
+			der = false;
+			cont4 = 0;
+
+		}
+		if (key == 'a') {
+			izq = false;
+			cont3 = 0;
+		}
+	}
+
 	@Override
 	public void mousePressed() {
-		if (mouseX > width/2-75 && mouseX < width/2+75 && mouseY >475 && mouseY < 525) {
+		if (mouseX > width / 2 - 75 && mouseX < width / 2 + 75 && mouseY > 475 && mouseY < 525) {
 			pantallas = 2;
 		}
-		if (dist(mouseX, mouseY, maleta.getX(), maleta.getY())<60) {
+		if (dist(mouseX, mouseY, maleta.getX(), maleta.getY()) < 60) {
 			clickMaleta = true;
 		}
-		if (dist(mouseX, mouseY, maleta.getX2(), maleta.getY2())<10) {
+		if (dist(mouseX, mouseY, maleta.getX2(), maleta.getY2()) < 10) {
 			clickMaleta = false;
 		}
 	}
