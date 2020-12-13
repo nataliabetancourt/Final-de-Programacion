@@ -58,9 +58,9 @@ public class Maletin {
 		app.fill(255, 204, 44);
 		app.image(gema, 250, 600, 50, 50);
 		app.textSize(24);
-		app.text(": " + gemasInventario.size(), 275, 608);
+		app.text(": " + gemasInventario.size(), 283, 608);
 		app.image(naranja, 250, 650, 50, 50);
-		app.text(": " + naranjasInventario.size(), 275, 658);
+		app.text(": " + naranjasInventario.size(), 283, 658);
 
 		// Salida maletin
 		app.fill(232, 17, 46);
@@ -68,9 +68,13 @@ public class Maletin {
 		app.circle(x2, y2, 20);
 
 	}
-
+	
 	public void agregarNaranja(Inventario ref) {
 		naranjasInventario.add(ref);
+	}
+	
+	public void removerNaranja() {
+		naranjasInventario.clear();
 	}
 	
 	public void agregarGema(Inventario ref) {
@@ -91,6 +95,22 @@ public class Maletin {
 
 	public int getY2() {
 		return y2;
+	}
+	
+	public ArrayList<Inventario> getNaranjasInventario() {
+		return naranjasInventario;
+	}
+	
+	public ArrayList<Inventario> getGemasInventario() {
+		return gemasInventario;
+	}
+	
+	public void setNaranjasInventario(ArrayList<Inventario> naranjasInventario) {
+		this.naranjasInventario = naranjasInventario;
+	}
+	
+	public void setGemasInventario(ArrayList<Inventario> gemasInventario) {
+		this.gemasInventario = gemasInventario;
 	}
 
 }

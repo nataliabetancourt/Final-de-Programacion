@@ -16,15 +16,15 @@ public class Principal extends PApplet {
 	}
 
 	// Fotos de fondo												
-	PImage portada, cueva, dia1, dia2, tarde, noche, castilloExterior, castilloInterior;		
+	PImage portada, cueva, dia1, dia2, tarde, noche, castilloExterior, castilloInterior, gameOver, win;		
 	// Fotos de obstaculos
 	PImage arbolD, arbolT, arbolN, ladrillo;
 	//Foto de inventario										
-	PImage m, nota;
+	PImage m, nota, notaG;
 	//Foto decoracion
-	PImage cama, tapete, closet;
+	PImage cama, tapete, closet, instrucciones;
 	//Fotos botones
-	PImage start, salida1, salida2, retorno1, retorno2;
+	PImage start, salida1, salida2, retorno1, retorno2, restart;
 	// Matriz																
 	Mapa mapa2, mapa3, mapa4, mapa5, mapa6, mapa7, mapa8, mapa9, mapa10;		
 	//Obstaculos	
@@ -35,11 +35,13 @@ public class Principal extends PApplet {
 	Bala B;
 	//Enemigos
 	Enemigos eB1, eB2, eB31, eB32, eB41, eB42, eB51, eB52, eB53, eB61, eB62;
-	Enemigos eQ1, eQ21, eQ22, eQ31, eQ32, eQ41, eQ42, eQ43, eQ51, eQ52, eQ53;
+	Enemigos eQ1, eQ21, eQ22, eQ31, eQ32, eQ41, eQ42, eQ43, eQ51, eQ52, eQ53, eQ61, eQ62, eQ63;
 	Enemigos jefe;
 	//Inventario
 	Maletin maleta;
 	Inventario elementos1;
+	//Rompecabeza
+	Rompecabeza dispararGemas, buscarGemas, combinacion;
 	public ArrayList<Inventario> listaG, listaN, lista2G,  lista2N;
 	public ArrayList<Inventario> lista3G, lista3N, lista4G,  lista4N;
 	public ArrayList<Inventario> lista5G, lista5N, lista6G,  lista6N;
@@ -54,11 +56,26 @@ public class Principal extends PApplet {
 	PImage gema, naranja;
 	// contadores y swiches para verificar estados
 	int cont1, cont11, cont2, cont22, cont3, cont33, cont4, cont44, contA, contB;
-	boolean donw, up, izq, der, atack, shot;
+	boolean donw, up, izq, der, atack, atack2, atack3, shot, ofensivo;
+	boolean daño, vidas;
+	int contadorDaño, contadorAtack, contadorAtack3, contadorVidas;
+	int naranjasVida;
+	//Boolean juegos
+	boolean disparoCompleto, buscarCompleto, combinacionCompleto;
+	//Nota
+	int x;
+	int y;
+	int contadorNota;
+	boolean verNota;
+	//Variables Rompecabezas Combinacion
+	int combi, conter1, conter2, conter3, conter4,comcont;
+	boolean pin1, pin2, pin3, pin4;
+	String var1, var2, var3, var4;	
+	int contadorColor;
+	
 
 	@Override
 	public void setup() {
-
 		//Pantalla 1														//Pantalla 2
 		portada	= loadImage("Portada-01.jpg");				cueva = loadImage("cueva_texturizado.png");
 		// Pantalla 3 														//Pantalla 4
@@ -82,7 +99,17 @@ public class Principal extends PApplet {
 		//Decoracion interior cueva
 		cama = loadImage("Cueva-02.png");					tapete = loadImage("Cueva-03.png");
 		closet = loadImage("Cueva-04.png");
-	
+		//Gameover														//Restart
+		gameOver = loadImage("Gameover-01.png");		restart = loadImage("Restart-02.png");
+		//Instrucciones													//Tesoro Final
+		instrucciones = loadImage("TECLAS.png");			win = loadImage("You win.jpg");
+		//Nota																//Nota Grande
+		nota = loadImage("note-02.png");						notaG = loadImage("Nota-02.jpg");
+		
+		restart();
+	}
+
+	public void restart() {
 		//Llamada de clases
 		mapa2 = new Mapa(cueva, 2, salida2, retorno1);				obs2 = new Obstaculos(2);
 		mapa3 = new Mapa(dia1, 3, salida1, retorno2);				obs3 = new Obstaculos(3);
@@ -103,30 +130,35 @@ public class Principal extends PApplet {
 		lista5G = new ArrayList<Inventario>();				lista5N = new ArrayList<Inventario>();
 		lista6G = new ArrayList<Inventario>();				lista6N = new ArrayList<Inventario>();
 		lista7G = new ArrayList<Inventario>();				lista7N = new ArrayList<Inventario>();
-		eB1 = new Enemigos(14, 1, mapa3, this, 3);
-		eB2 = new Enemigos(22, 1, mapa4, this, 3);
-		eB31 = new Enemigos(22, 1, mapa5, this, 3);
-		eB32 = new Enemigos(4, 1, mapa5, this, 3);
-		eB41 = new Enemigos(22, 6, mapa6, this, 3);
-		eB42 = new Enemigos(22, 1, mapa6, this, 3);
-		eB51 = new Enemigos(22, 1, mapa7, this, 3);
-		eB52 = new Enemigos(22, 4, mapa7,  this, 3);
-		eB53 = new Enemigos(22, 8, mapa7,  this, 3);
-		eB61 = new Enemigos(22, 1, mapa8,  this, 3);
-		eB62 = new Enemigos(22, 4, mapa8,  this, 3);
-		eQ1 = new Enemigos(14, 4, mapa4, this, 6);
-		eQ21 = new Enemigos(14, 4, mapa4, this, 6);
-		eQ22 = new Enemigos(3, 8, mapa4, this, 6);
-		eQ31 = new Enemigos(17, 9, mapa4, this, 6);
-		eQ32 = new Enemigos(2, 10, mapa4, this, 6);
-		eQ41 = new Enemigos(5, 6, mapa4, this, 6);
-		eQ42 = new Enemigos(18, 5, mapa4, this, 6);
-		eQ43 = new Enemigos(4, 7, mapa4, this, 6);
-		eQ51 = new Enemigos(9, 6, mapa4, this, 6);
-		eQ52 = new Enemigos(2, 7, mapa4, this, 6);
-		eQ53 = new Enemigos(16, 4, mapa4, this, 6);
-		jefe = new Enemigos(20, 6, mapa10, this, 10);
-		
+		eB1 = new Enemigos(14, 1, mapa3, this, 10);
+		eB2 = new Enemigos(22, 1, mapa4, this, 10);
+		eB31 = new Enemigos(22, 1, mapa5, this, 10);
+		eB32 = new Enemigos(4, 1, mapa5, this, 10);
+		eB41 = new Enemigos(22, 6, mapa6, this, 10);
+		eB42 = new Enemigos(22, 1, mapa6, this, 10);
+		eB51 = new Enemigos(22, 1, mapa7, this, 10);
+		eB52 = new Enemigos(22, 4, mapa7,  this, 10);
+		eB53 = new Enemigos(22, 8, mapa7,  this, 10);
+		eB61 = new Enemigos(22, 1, mapa8,  this, 10);
+		eB62 = new Enemigos(22, 4, mapa8,  this, 10);
+		eQ1 = new Enemigos(14, 4, mapa4, this, 15);
+		eQ21 = new Enemigos(14, 4, mapa4, this, 15);
+		eQ22 = new Enemigos(3, 8, mapa4, this, 15);
+		eQ31 = new Enemigos(17, 9, mapa4, this, 15);
+		eQ32 = new Enemigos(2, 10, mapa4, this, 15);
+		eQ41 = new Enemigos(5, 6, mapa4, this, 15);
+		eQ42 = new Enemigos(18, 5, mapa4, this, 15);
+		eQ43 = new Enemigos(4, 7, mapa4, this, 15);
+		eQ51 = new Enemigos(9, 6, mapa5, this, 15);
+		eQ52 = new Enemigos(2, 7, mapa5, this, 15);
+		eQ53 = new Enemigos(16, 4, mapa5, this, 15);
+		eQ61 = new Enemigos(2, 7, mapa6, this, 15);
+		eQ62 = new Enemigos(16, 4, mapa6, this, 15);
+		eQ63 = new Enemigos(16, 4, mapa6, this, 15);
+		jefe = new Enemigos(20, 6, mapa10, this, 50);
+		dispararGemas = new Rompecabeza(this);
+		buscarGemas = new Rompecabeza(this);
+		combinacion = new Rompecabeza(600, 350);
 		
 		//Listas de gemas y naranjas para cada pantalla
 		for (int i = 0; i < 3; i++) {
@@ -146,12 +178,95 @@ public class Principal extends PApplet {
 		pantallas = 1;
 		tiempoSalida = 0;
 		clickMaleta = false;
+		daño = true;
+		atack2 = false;
+		contadorDaño = 0;
+		contadorAtack = 0;
+		naranjasVida = 0;
+		contadorVidas = 0;
+		vidas = false;
+		atack3 = false;
+		contadorAtack3 = 0;
+		disparoCompleto = false;
+		buscarCompleto = false;
+		combinacionCompleto = false;
+		x = 175;
+		y = 275;
+		contadorNota = 0;
+		verNota = false;
+		combi = 0;
+		comcont = 0;
+		conter1 = 0;
+		conter2 = 0;
+		conter3 = 0;
+		conter4 = 0;
+		var1 = "1";
+		var2 = "2";
+		var3 = "3";
+		var4 = "4";
+		pin1 = false;
+		pin2 = false;
+		pin3 = false;
+		pin4 = false;
+		contadorColor = 0;
+		ofensivo = false;
 
 	}
-
+	
 	@Override
 	public void draw() {
 		background(0);
+		
+		if (shot == false) {
+			B.setX(p.getX());
+			B.setY(p.getY());
+		}
+		
+		//Regula la quitada de vida
+		if (daño == false) {
+			contadorDaño++;
+			if (contadorDaño >= 50) {
+				daño = true;
+				contadorDaño = 0;
+			}
+		}
+		
+		if (atack3 == false) {
+			contadorAtack3++;
+			if (contadorAtack3 >= 50) {
+				atack3 = true;
+				contadorAtack3 = 0;
+			}
+		}
+		
+		if (atack2 == true) {
+			contadorAtack++;
+			if (contadorAtack >= 2) {
+				atack2 = false;
+				contadorAtack = 0;
+			}
+		}
+		
+		if (vidas == true) {
+			contadorVidas++;
+			if (contadorVidas >= 2) {
+				vidas = false;
+				contadorVidas = 0;
+	
+			}
+		}
+		
+		//Aumentar vida personaje
+		naranjasVida = maleta.getNaranjasInventario().size();
+	
+		if (naranjasVida == 5) {
+			vidas = true;
+			if (vidas == true) {
+				p.setLife(p.getLife()+1);
+				maleta.removerNaranja();
+			}
+		}
+		
 		switch (pantallas) {
 		case 1:
 			imageMode(CORNER);
@@ -190,16 +305,26 @@ public class Principal extends PApplet {
 			}
 			
 			obs2.pintar(this, ladrillo, 121, 92);
-
-			//Validar salida especial por ubicacion del circulo
+			
+			//Instrucciones del juego
+			imageMode(CENTER);
+			image(instrucciones, 900, 500, 500, 300);
+			
+			//Validar salida rompecabezas
 			if (dist(p.getX(), p.getY(), mapa3.getxSalida2(), mapa3.getySalida2())<25) {
 				tiempoSalida++;
-				if (tiempoSalida == 100) {
-					p.setCol(11);
-					p.setFil(1);
-					pantallas = 3;
-					tiempoSalida = 0;
-				}
+				if (tiempoSalida >= 100) {
+					buscarGemas.pintarBuscarGema(this);
+					if (buscarGemas.getClickA() == false && buscarGemas.getClickAm() == false && buscarGemas.getClickR() == false && buscarGemas.getClickV() == false) {
+						buscarCompleto = true;
+						if (buscarCompleto == true) {
+							p.setCol(11);
+							p.setFil(1);
+							pantallas = 3;
+							tiempoSalida = 0;
+						}
+					}
+				}	
 			}
 			break;
 		case 3:
@@ -229,7 +354,17 @@ public class Principal extends PApplet {
 				}
 			}
 			
+			if (atack3 == true) {
+				validarFuego(eB1, shot);
+			}
+			
+			if (atack2 == true) {
+				validarEspada(eB1);
+			}
 			obs3.pintar(this, arbolD, 80, 80);
+			if (daño==true) {
+				validarEnemigo(eB1);
+			}
 			eB1.pintarBasicoy(this);
 			eB1.moverBasicoy(2);
 			validarSalida(4, 1, 6);
@@ -262,11 +397,24 @@ public class Principal extends PApplet {
 				}
 			}
 			
+			if (atack3 == true) {
+				validarFuego(eB2, shot);
+				validarFuego(eQ1, shot);
+			}
+			
+			if (atack2 == true) {
+				validarEspada(eB2);
+				validarEspada(eQ1);
+			}
+			if (daño==true) {
+				validarEnemigo(eB2);
+				validarEnemigo(eQ1);
+			}
 			obs4.pintar(this, arbolD, 80, 80);
 			eB2.pintarBasicoy(this);
 			eB2.moverBasicoy(3);
 			eQ1.pintarQuieto(this);
-			validarSalida(5, 1, 6);
+			validarSalidaDisparar(dispararGemas, 5, 1, 6);
 			validarRetorno(3, 1, 6);
 			break;
 		case 5:
@@ -296,6 +444,25 @@ public class Principal extends PApplet {
 				}
 			}
 			
+			if (atack3 == true) {
+				validarFuego(eB31, shot);
+				validarFuego(eB32, shot);
+				validarFuego(eQ21, shot);
+				validarFuego(eQ22, shot);
+			}
+			
+			if (atack2 == true) {
+				validarEspada(eB31);
+				validarEspada(eB32);
+				validarEspada(eQ21);
+				validarEspada(eQ22);
+			}
+			if (daño==true) {
+				validarEnemigo(eB31);
+				validarEnemigo(eB32);
+				validarEnemigo(eQ21);
+				validarEnemigo(eQ22);
+			}
 			obs5.pintar(this, arbolT, 80, 80);
 			eB31.pintarBasicoy(this);
 			eB32.pintarBasicoy(this);
@@ -310,6 +477,7 @@ public class Principal extends PApplet {
 			p.setRefMapa(mapa6);
 			p.setObs(obs6);
 			mapa6.pintar(this);
+			image(nota, x, y, 50, 50);
 			
 			//Gemas regados por mapa
 			for (int i = 0; i < lista5G.size(); i++) {
@@ -333,6 +501,25 @@ public class Principal extends PApplet {
 				}
 			}
 			
+			if (atack3 == true) {
+				validarFuego(eB41, shot);
+				validarFuego(eB42, shot);
+				validarFuego(eQ31, shot);
+				validarFuego(eQ32, shot);
+			}
+			
+			if (atack2 == true) {
+				validarEspada(eB41);
+				validarEspada(eB42);
+				validarEspada(eQ31);
+				validarEspada(eQ32);
+			}
+			if (daño==true) {
+				validarEnemigo(eB41);
+				validarEnemigo(eB42);
+				validarEnemigo(eQ31);
+				validarEnemigo(eQ32);
+			}
 			eB41.pintarBasicox(this);
 			eB42.pintarBasicoy(this);
 			eB41.moverBasicox(5);
@@ -340,8 +527,97 @@ public class Principal extends PApplet {
 			eQ31.pintarQuieto(this);
 			eQ32.pintarQuieto(this);
 			obs6.pintar(this, arbolN, 80, 80);
-			validarSalida(7, 1, 6);
 			validarRetorno(5, 1, 6);
+			
+			
+			//Recoger y mostrar nota
+			if (dist(p.getX(), p.getY(), x, y)<25) {
+				contadorNota++;
+				if (contadorNota > 10) {
+					verNota = true;
+					if (verNota == true) {
+						imageMode(CENTER);
+						image(notaG, width/2, height/2, 480, 480);
+						if (contadorNota > 50) {
+							verNota = false;
+						}
+					}
+				}
+			}
+			
+			//Validar salida rompecabezas
+			if (dist(p.getX(), p.getY(), mapa3.getxSalida(), mapa3.getySalida())<25) {
+				tiempoSalida++;
+				if (tiempoSalida >= 100) {
+					combinacion.pintarCombinacion(this);
+
+					if (combi >= 5) {
+						combi = 0;
+					}
+					
+					if(combi==4) {
+						comcont++;
+						if (comcont>=20) {
+							comcont=0;
+							combi++;
+						}
+					}
+
+					combinacion.pintarRojoC(this, pin1);
+					combinacion.pintarVerdeC(this, pin2);
+					combinacion.pintarAzulC(this, pin3);
+					combinacion.pintarPurpuraC(this, pin4);
+
+					if (pin1 == true) {
+						conter1++;
+						if (conter1 >= 20) {
+							conter1 = 0;
+							pin1 = false;
+						}
+					}
+
+					if (pin2 == true) {
+						conter2++;
+						if (conter2 >= 20) {
+							conter2 = 0;
+							pin2 = false;
+						}
+					}
+
+					if (pin3 == true) {
+						conter3++;
+						if (conter3 >= 20) {
+							conter3 = 0;
+							pin3 = false;
+						}
+					}
+
+					if (pin4 == true) {
+						conter4++;
+						if (conter4 >= 20) {
+							conter4 = 0;
+							pin4 = false;
+						}
+					}
+
+					if (var1 == "rojo" && var2 == "rojo" && var3 == "verde" && var4 == "purpura") {
+						combinacionCompleto = true;
+					}else if(combi>=4) {
+						textSize(32);
+						fill(255, 0, 0);
+						textAlign(CENTER);
+						text("WRONG CODE", 600, 550);
+					}
+					
+						if (combinacionCompleto == true) {
+							p.setCol(1);
+							p.setFil(6);
+							pantallas = 7;
+							tiempoSalida = 0;
+						}
+					}
+				}	
+			
 			break;
 		case 7:
 			p.setRefMapa(mapa7);
@@ -370,6 +646,30 @@ public class Principal extends PApplet {
 				}
 			}
 			
+			if (atack3 == true) {
+				validarFuego(eB51, shot);
+				validarFuego(eB52, shot);
+				validarFuego(eB53, shot);
+				validarFuego(eQ41, shot);
+				validarFuego(eQ42, shot);
+				validarFuego(eQ43, shot);
+			}
+			if (atack2 == true) {
+				validarEspada(eB51);
+				validarEspada(eB52);
+				validarEspada(eB53);
+				validarEspada(eQ41);
+				validarEspada(eQ42);
+				validarEspada(eQ43);
+			}
+			if (daño==true) {
+				validarEnemigo(eB51);
+				validarEnemigo(eB52);
+				validarEnemigo(eB53);
+				validarEnemigo(eQ41);
+				validarEnemigo(eQ42);
+				validarEnemigo(eQ43);
+			}
 			obs7.pintar(this, arbolD, 80, 80);
 			eB51.pintarBasicoy(this);
 			eB52.pintarBasicox(this);
@@ -410,13 +710,34 @@ public class Principal extends PApplet {
 				}
 			}
 			
+			if (atack3 == true) {
+				validarFuego(eB61, shot);
+				validarFuego(eB62, shot);
+				validarFuego(eQ61, shot);
+				validarFuego(eQ62, shot);
+				validarFuego(eQ63, shot);
+			}
+			if (atack2 == true) {
+				validarEspada(eB61);
+				validarEspada(eB62);
+				validarEspada(eQ61);
+				validarEspada(eQ62);
+				validarEspada(eQ63);
+			}
+			if (daño==true) {
+				validarEnemigo(eB61);
+				validarEnemigo(eB62);
+				validarEnemigo(eQ41);
+				validarEnemigo(eQ42);
+				validarEnemigo(eQ43);
+			}
 			eB61.pintarBasicoy(this);
 			eB62.pintarBasicox(this);
 			eB61.moverBasicoy(6);
 			eB62.moverBasicox(6);
-			eQ51.pintarQuieto(this);
-			eQ52.pintarQuieto(this);
-			eQ53.pintarQuieto(this);
+			eQ61.pintarQuieto(this);
+			eQ62.pintarQuieto(this);
+			eQ63.pintarQuieto(this);
 			obs8.pintar(this, arbolT, 80, 80);
 			validarSalida(9, 1, 6);
 			validarRetorno(7, 1, 6);
@@ -444,10 +765,104 @@ public class Principal extends PApplet {
 			mapa10.pintar(this);
 			jefe.pintarJefe(this);
 			jefe.moverJefe();
+			
+			//Validar distancia enemigo
+			if (daño==true) {
+				if (dist(p.getX(), p.getY(), jefe.getX(), jefe.getY())<80) {
+					daño = false;
+					p.setLife(p.getLife()-1);
+				}
+				if (p.getLife() == 0) {
+					pantallas = 12;
+				}
+			}
+		
+			//Validar distancia ataque
+			if (atack2 == true&& jefe.getLife() != 0) {
+				switch (p.getdir()) {
+				case 0: //Adelante
+					if (dist(p.getX(), p.getY()+40, jefe.getX(), jefe.getY())<100) {
+						jefe.setLife(jefe.getLife()-1);
+					}
+					break; 
+				case 1: //Derecha
+					if (dist(p.getX()+40, p.getY(), jefe.getX(), jefe.getY())<100) {
+						jefe.setLife(jefe.getLife()-1);
+					}
+					break;
+				case 2: //Atras
+					if (dist(p.getX(), p.getY()-40, jefe.getX(), jefe.getY())<100) {
+						jefe.setLife(jefe.getLife()-1);
+					}
+					break;
+				case 3: //Izquierda
+					if (dist(p.getX()-40, p.getY(), jefe.getX(), jefe.getY())<100) {
+						jefe.setLife(jefe.getLife()-1);
+					}
+					break;
+				}
+			}
+
+				if (atack3 == true && jefe.getLife() != 0) {
+					if (shot == true) {
+						switch (p.getdir()) {
+						case 0: //Adelante
+							if (dist(B.getX(), B.getY()+40, jefe.getX(), jefe.getY())<100) {
+								jefe.setLife(jefe.getLife()-1);
+							}
+							break; 
+						case 1: //Derecha
+							if (dist(B.getX()+40, B.getY(), jefe.getX(), jefe.getY())<100) {
+								jefe.setLife(jefe.getLife()-1);
+							}
+							break;
+						case 2: //Atras
+							if (dist(B.getX(), B.getY()-40, jefe.getX(), jefe.getY())<100) {
+								jefe.setLife(jefe.getLife()-1);
+							}
+							break;
+						case 3: //Izquierda
+							if (dist(B.getX()-40, B.getY(), jefe.getX(), jefe.getY())<100) {
+								jefe.setLife(jefe.getLife()-1);
+							}
+							break;
+						}
+					}
+				}
+				
+
+				if (jefe.getLife() == 0) {
+					jefe.setVivo(false);
+					jefe.setX(10000);
+				}
+				
+			break;
+		case 12:
+			background(0);
+			imageMode(CENTER);
+			image(gameOver, width/2, 300, 500, 130);
+			image(restart, 1050, 630, 200, 50);
+			break;
+		case 13:
+			background(0);
+			imageMode(CORNER);
+			image(win, 0, 0);
+			rectMode(CORNER);
+			fill(0, 80);
+			stroke(255, 204, 44);
+			strokeWeight(3);
+			rect(25, 25, 270, 80);
+			fill(255, 204, 44);
+			textSize(34);
+			textAlign(CORNER);
+			imageMode(CENTER);
+			image(gema, 60, 65, 60, 60);
+			text("Gem: " + (maleta.getGemasInventario().size()*100), 100, 74);
+			image(restart, 1050, 630, 200, 50);
 			break;
 		}
 		
-		if (pantallas > 1) {
+		if (pantallas > 1 && pantallas < 11) {
 			maleta.pintar(this, m);
 			p.miraLife(this);
 			
@@ -715,13 +1130,20 @@ public class Principal extends PApplet {
 				
 				}
 			}
+			
+			//Ganar
+			if (jefe.getLife() == 0) {
+				pantallas = 13;
+			}
 		}
 		
-		if (clickMaleta == true) {
+		if (clickMaleta == true && pantallas < 11) {
 			maleta.pintarAbierto(this, gema, naranja);
+			
 		}
 	}
 	
+	//Circulo para seguir a otros pantallas
 	public void validarSalida(int pantalla, int col, int fil) {
 		if (dist(p.getX(), p.getY(), mapa3.getxSalida(), mapa3.getySalida())<25) {
 			tiempoSalida++;
@@ -734,6 +1156,29 @@ public class Principal extends PApplet {
 		}
 	}
 	
+	//Circulo para seguir con juego
+	public void validarSalidaDisparar(Rompecabeza ref, int pantalla, int col, int fil) {
+		if (dist(p.getX(), p.getY(), mapa3.getxSalida(), mapa3.getySalida())<25) {
+			tiempoSalida++;
+			if (tiempoSalida >= 100) {
+				dispararGemas.pintardispararGemas(this);
+				if (dispararGemas.getPintado1() == false && dispararGemas.getPintado2() == false && dispararGemas.getPintado3() == false
+					&& dispararGemas.getPintado4() == false && dispararGemas.getPintado5() == false && dispararGemas.getPintado6() == false
+					&& dispararGemas.getPintado7()== false && dispararGemas.getPintado8() == false) {
+					disparoCompleto = true;
+					if (disparoCompleto == true) {
+						p.setCol(col);
+						p.setFil(fil);
+						pantallas = pantalla;
+						tiempoSalida = 0;
+					}
+				}
+			}	
+		}
+
+	}
+	
+	//Circulo para regresar a otras pantallas
 	public void validarRetorno(int pantalla, int col, int fil) {
 		if (dist(p.getX(), p.getY(), mapa3.getxRetorno(), mapa3.getyRetorno())<25) {
 			tiempoSalida++;
@@ -746,12 +1191,81 @@ public class Principal extends PApplet {
 		}
 	}
 	
+	//Enemigo le quita vida al personaje
 	public  void validarEnemigo(Enemigos ref) {
-		if (dist(p.getX(), p.getY(), ref.getX(), ref.getY())<75) {
-			System.err.println("si");
+		if (dist(p.getX(), p.getY(), ref.getX(), ref.getY())<50) {
+			daño = false;
+			p.setLife(p.getLife()-1);
+		}
+		
+		if (p.getLife() == 0) {
+			pantallas = 12;
+		}
+	}
+	
+	//Personaje le quita vida el enemigo con espada
+	public void validarEspada(Enemigos ref) {
+		switch (p.getdir()) {
+		case 0: //Adelante
+			if (dist(p.getX(), p.getY()+40, ref.getX(), ref.getY())<60) {
+				ref.setLife(ref.getLife()-1);
+			}
+			break; 
+		case 1: //Derecha
+			if (dist(p.getX()+40, p.getY(), ref.getX(), ref.getY())<60) {
+				ref.setLife(ref.getLife()-1);
+			}
+			break;
+		case 2: //Atras
+			if (dist(p.getX(), p.getY()-40, ref.getX(), ref.getY())<60) {
+				ref.setLife(ref.getLife()-1);
+			}
+			break;
+		case 3: //Izquierda
+			if (dist(p.getX()-40, p.getY(), ref.getX(), ref.getY())<60) {
+				ref.setLife(ref.getLife()-1);
+			}
+			break;
 		}
 
+		if (ref.getLife() == 0) {
+			ref.setVivo(false);
+			ref.setX(10000);
+		}
 	}
+	
+	public void validarFuego(Enemigos ref, boolean ofensivo) {
+		if (ofensivo == true) {
+			switch (p.getdir()) {
+			case 0: //Adelante
+				if (dist(B.getX(), B.getY(), ref.getX(), ref.getY())<20) {
+					ref.setLife(ref.getLife()-1);
+				}
+				break; 
+			case 1: //Derecha
+				if (dist(B.getX(), B.getY(), ref.getX(), ref.getY())<20) {
+					ref.setLife(ref.getLife()-1);
+				}
+				break;
+			case 2: //Atras
+				if (dist(B.getX(), B.getY(), ref.getX(), ref.getY())<20) {
+					ref.setLife(ref.getLife()-1);
+				}
+				break;
+			case 3: //Izquierda
+				if (dist(B.getX(), B.getY(), ref.getX(), ref.getY())<20) {
+					ref.setLife(ref.getLife()-1);
+				}
+				break;
+			}
+		}
+
+		if (ref.getLife() == 0) {
+			ref.setVivo(false);
+			ref.setX(10000);
+		}
+	}
+
 	
 	@Override
 	public void keyPressed() {
@@ -775,9 +1289,11 @@ public class Principal extends PApplet {
 			break;
 		case 'p':
 			atack = true;
+			atack2 = true;
 			break;
 		case 'o':
 			shot = true;
+			atack3 = true;
 			break;
 		}
 	}
@@ -802,17 +1318,178 @@ public class Principal extends PApplet {
 		}
 	}
 
-	
 	@Override
 	public void mousePressed() {
+		//Start
 		if (mouseX > width/2-75 && mouseX < width/2+75 && mouseY >475 && mouseY < 525) {
 			pantallas = 2;
 		}
+		
+		//Restart
+		if (mouseX > 950 && mouseX < 1150 && mouseY > 605 && mouseY < 655 && pantallas == 13 || pantallas == 12) {
+			pantallas = 1;
+			restart();
+		}
+		
+		//Maleta
 		if (dist(mouseX, mouseY, maleta.getX(), maleta.getY())<60) {
 			clickMaleta = true;
 		}
 		if (dist(mouseX, mouseY, maleta.getX2(), maleta.getY2())<10) {
 			clickMaleta = false;
 		}
+		
+		//Rompecabezas disparo
+		if (disparoCompleto == false) {
+			if (dist(mouseX, mouseY, dispararGemas.getX1(), dispararGemas.getY()) < dispararGemas.getMinDist()) {
+				dispararGemas.setPintado1(false);
+			}
+
+			if (dist(mouseX, mouseY, dispararGemas.getX2(), dispararGemas.getY()) < dispararGemas.getMinDist()) {
+				dispararGemas.setPintado2(false);
+			}
+
+			if (dist(mouseX, mouseY, dispararGemas.getX3(), dispararGemas.getY()) < dispararGemas.getMinDist()) {
+				dispararGemas.setPintado3(false);
+			}
+
+			if (dist(mouseX, mouseY, dispararGemas.getX4(), dispararGemas.getY()) < dispararGemas.getMinDist()) {
+				dispararGemas.setPintado4(false);
+			}
+
+			if (dist(mouseX, mouseY, dispararGemas.getX5(), dispararGemas.getY()) < dispararGemas.getMinDist()) {
+				dispararGemas.setPintado5(false);
+			}
+
+			if (dist(mouseX, mouseY, dispararGemas.getX6(), dispararGemas.getY()) < dispararGemas.getMinDist()) {
+				dispararGemas.setPintado6(false);
+			}
+			
+			if (dist(mouseX, mouseY, dispararGemas.getX7(), dispararGemas.getY()) < dispararGemas.getMinDist()) {
+				dispararGemas.setPintado7(false);
+			}
+			
+			if (dist(mouseX, mouseY, dispararGemas.getX8(), dispararGemas.getY()) < dispararGemas.getMinDist()) {
+				dispararGemas.setPintado8(false);
+			}
+		}
+		
+		//Rompecabezas buscar
+		if (buscarCompleto == false) {
+			if (dist(mouseX, mouseY, buscarGemas.getXgA(), buscarGemas.getYgA())<10) {
+				buscarGemas.setClickA(false);
+			}
+			if (dist(mouseX, mouseY, buscarGemas.getXgAm(), buscarGemas.getYgAm())<10) {
+				buscarGemas.setClickAm(false);
+			}
+			if (dist(mouseX, mouseY, buscarGemas.getXgR(), buscarGemas.getYgR())<10) {
+				buscarGemas.setClickR(false);
+			}
+			if (dist(mouseX, mouseY, buscarGemas.getXgV(), buscarGemas.getYgV())<10) {
+				buscarGemas.setClickV(false);
+			}
+		}
+		
+		if (combinacionCompleto == false) {
+			if (dist(mouseX, mouseY, combinacion.getBlock1x(), combinacion.getBlock1y()) < 50 && combi == 0) {
+				var1 = "rojo";
+				pin1 = true;
+
+			}
+			if (dist(mouseX, mouseY, combinacion.getBlock2x(), combinacion.getBlock2y()) < 50 && combi == 0) {
+
+				var1 = "verde";
+				pin2 = true;
+
+			}
+
+			if (dist(mouseX, mouseY, combinacion.getBlock3x(), combinacion.getBlock3y()) < 50 && combi == 0) {
+				var1 = "azul";
+				pin3 = true;
+
+			}
+
+			if (dist(mouseX, mouseY, combinacion.getBlock4x(), combinacion.getBlock4y()) < 50 && combi == 0) {
+				var1 = "purpura";
+				pin4 = true;
+			}
+
+			if (dist(mouseX, mouseY, combinacion.getBlock1x(), combinacion.getBlock1y()) < 50 && combi == 1) {
+				var2 = "rojo";
+				pin1 = true;
+
+			}
+			if (dist(mouseX, mouseY, combinacion.getBlock2x(), combinacion.getBlock2y()) < 50 && combi == 1) {
+				var2 = "verde";
+				pin2 = true;
+
+			}
+
+			if (dist(mouseX, mouseY, combinacion.getBlock3x(), combinacion.getBlock3y()) < 50 && combi == 1) {
+				var2 = "azul";
+				pin3 = true;
+
+			}
+
+			if (dist(mouseX, mouseY, combinacion.getBlock4x(), combinacion.getBlock4y()) < 50 && combi == 1) {
+				var2 = "purpura";
+				pin4 = true;
+				
+			}
+			if (dist(mouseX, mouseY, combinacion.getBlock1x(), combinacion.getBlock1y()) < 50 && combi == 2) {
+				var3 = "rojo";
+				pin1 = true;
+
+			}
+			if (dist(mouseX, mouseY, combinacion.getBlock2x(), combinacion.getBlock2y()) < 50 && combi == 2) {
+				var3 = "verde";
+				pin2 = true;
+
+			}
+
+			if (dist(mouseX, mouseY, combinacion.getBlock3x(), combinacion.getBlock3y()) < 50 && combi == 2) {
+				var3 = "azul";
+				pin3 = true;
+
+			}
+
+			if (dist(mouseX, mouseY, combinacion.getBlock4x(), combinacion.getBlock4y()) < 50 && combi == 2) {
+				var3 = "purpura";
+				pin4 = true;
+			}
+			
+			if (dist(mouseX, mouseY, combinacion.getBlock1x(), combinacion.getBlock1y()) < 50 && combi == 3) {
+				var4 = "rojo";
+				pin1 = true;
+
+			}
+			
+			if (dist(mouseX, mouseY, combinacion.getBlock2x(), combinacion.getBlock2y()) < 50 && combi == 3) {
+				var4 = "verde";
+				pin2 = true;
+
+			}
+
+			if (dist(mouseX, mouseY, combinacion.getBlock3x(), combinacion.getBlock3y()) < 50 && combi == 3) {
+				var4 = "azul";
+				pin3 = true;
+
+			}
+
+			if (dist(mouseX, mouseY, combinacion.getBlock4x(), combinacion.getBlock4y()) < 50 && combi == 3) {
+				var4 = "purpura";
+				pin4 = true;
+			}
+			
+		}
 	}
+	
+	@Override
+	public void mouseClicked() {	
+		if (dist(mouseX, mouseY, combinacion.getXColor(), combinacion.getYColor()) < 100 ) {
+			combi++;
+		}
+	}
+
 }
+

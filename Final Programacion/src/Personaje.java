@@ -190,7 +190,7 @@ public class Personaje {
 		
 		}
 	}
-
+	
 	public void mover(String dir) {
 		int destino = -1;
 		int obstaculos = -1;
